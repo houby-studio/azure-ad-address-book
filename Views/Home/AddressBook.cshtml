@@ -1,0 +1,70 @@
+﻿@using Newtonsoft.Json.Linq
+@{
+    ViewData["Title"] = "Address Book";
+}
+<table id="addressbook" class="table table-responsive table-bordered table-hover text-nowrap" style="font-family: monospace">
+    <thead>
+        <tr>
+            <th>Jméno</th>
+            <th>Příjmení</th>
+            <th>E-mail</th>
+            <th>Telefon</th>
+            <th>Mobil</th>
+            <th>Firma</th>
+            <th>Pozice</th>
+            <th>Oddělení</th>
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            List<Microsoft.Graph.User> users = ViewData["AddressBook"] as List<Microsoft.Graph.User>;
+            foreach (var user in users)
+            {
+                <tr>
+                    <td>
+                        @user.GivenName
+                    </td>
+                    <td>
+                        @user.Surname
+                    </td>
+                    <td>
+                        @user.Mail
+                    </td>
+                    <td>
+                        @string.Join(",", @user.BusinessPhones.ToArray())
+                    </td>
+                    <td>
+                        @user.MobilePhone
+                    </td>
+                    <td>
+                        @user.CompanyName
+                    </td>
+                    <td>
+                        @user.JobTitle
+                    </td>
+                    <td>
+                        @user.Department
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>
+
+<script>
+    $(document).ready(function () {
+        $('#addressbook').DataTable({
+            paging: false,
+            responsive: true,
+            fixedHeader: {
+                header: true
+            },
+            columnDefs: [
+                {
+                    "targets": [5,6,7],
+                    "visible": false
+                }
+            ]
+        });
+    });
+</script>
